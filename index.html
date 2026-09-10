@@ -1,14 +1,431 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>GitHub Actions Deployment</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Automated App 🚀</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #ffe4f1, #e8e4ff, #dff7ff);
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* Floating circles */
+        .bubble {
+            position: fixed;
+            border-radius: 50%;
+            opacity: 0.35;
+            filter: blur(2px);
+            z-index: 0;
+        }
+
+        .bubble1 {
+            width: 180px;
+            height: 180px;
+            background: #ff9ecf;
+            top: 5%;
+            left: 5%;
+        }
+
+        .bubble2 {
+            width: 250px;
+            height: 250px;
+            background: #9d9bff;
+            bottom: 5%;
+            right: 5%;
+        }
+
+        .bubble3 {
+            width: 120px;
+            height: 120px;
+            background: #7ee8fa;
+            top: 45%;
+            right: 20%;
+        }
+
+        /* Navigation */
+        nav {
+            width: 90%;
+            max-width: 1100px;
+            margin: 25px auto;
+            padding: 15px 25px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            background: rgba(255,255,255,0.65);
+            backdrop-filter: blur(15px);
+
+            border: 1px solid rgba(255,255,255,0.8);
+            border-radius: 20px;
+
+            box-shadow: 0 10px 30px rgba(80,70,120,0.12);
+
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 700;
+            color: #7c5cff;
+        }
+
+        .nav-status {
+            padding: 8px 15px;
+            border-radius: 20px;
+            background: #e8fff0;
+            color: #22a65a;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 70vh;
+            width: 90%;
+            max-width: 1100px;
+            margin: auto;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-content {
+            max-width: 750px;
+        }
+
+        .emoji {
+            font-size: 65px;
+            margin-bottom: 15px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-12px);
+            }
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.7);
+            padding: 8px 16px;
+            border-radius: 30px;
+            color: #7c5cff;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: clamp(42px, 7vw, 75px);
+            line-height: 1.05;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #7c5cff, #ff5ca8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .description {
+            font-size: 19px;
+            line-height: 1.7;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .button {
+            display: inline-block;
+            text-decoration: none;
+            padding: 14px 28px;
+            border-radius: 30px;
+
+            background: linear-gradient(90deg, #7c5cff, #ff5ca8);
+            color: white;
+
+            font-weight: 700;
+            box-shadow: 0 10px 25px rgba(124,92,255,0.25);
+
+            transition: 0.3s;
+        }
+
+        .button:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 30px rgba(124,92,255,0.35);
+        }
+
+        /* Cards */
+        .features {
+            width: 90%;
+            max-width: 1100px;
+            margin: 20px auto 70px;
+
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+
+            position: relative;
+            z-index: 1;
+        }
+
+        .card {
+            background: rgba(255,255,255,0.68);
+            backdrop-filter: blur(15px);
+
+            padding: 30px;
+            border-radius: 25px;
+
+            border: 1px solid rgba(255,255,255,0.8);
+
+            box-shadow: 0 10px 30px rgba(80,70,120,0.1);
+
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+        }
+
+        .card-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        .card h3 {
+            margin-bottom: 10px;
+            color: #444;
+        }
+
+        .card p {
+            color: #777;
+            line-height: 1.6;
+        }
+
+        /* Deployment section */
+        .deployment {
+            width: 90%;
+            max-width: 900px;
+            margin: 0 auto 70px;
+
+            background: rgba(255,255,255,0.7);
+            backdrop-filter: blur(15px);
+
+            padding: 35px;
+            border-radius: 25px;
+
+            text-align: center;
+
+            position: relative;
+            z-index: 1;
+
+            box-shadow: 0 10px 30px rgba(80,70,120,0.1);
+        }
+
+        .deployment h2 {
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .steps {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .step {
+            padding: 12px 18px;
+            background: #f4f0ff;
+            border-radius: 15px;
+            color: #6b50d9;
+            font-weight: 600;
+        }
+
+        .arrow {
+            font-size: 22px;
+            color: #aaa;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #777;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Mobile */
+        @media (max-width: 750px) {
+
+            nav {
+                width: 92%;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+                min-height: 65vh;
+            }
+
+            .description {
+                font-size: 17px;
+            }
+
+            .steps {
+                flex-direction: column;
+            }
+
+            .arrow {
+                transform: rotate(90deg);
+            }
+        }
+    </style>
 </head>
 
 <body>
-    <h1>My First Automated Deployment</h1>
 
-    <p>This application is deployed automatically.</p>
+    <!-- Background bubbles -->
+    <div class="bubble bubble1"></div>
+    <div class="bubble bubble2"></div>
+    <div class="bubble bubble3"></div>
 
-    <p>My first CI/CD deployment using GitHub Actions.</p>
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">✨ MyApp</div>
+
+        <div class="nav-status">
+            ● Live
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <div class="emoji">🚀</div>
+
+            <div class="badge">
+                ✨ Deployed with GitHub Actions
+            </div>
+
+            <h1>
+                Hello from<br>
+                GitHub Actions!
+            </h1>
+
+            <p class="description">
+                Welcome to my first automated deployment project.
+                Every time I push new code to GitHub, my website
+                is automatically deployed. 💖
+            </p>
+
+            <a href="#features" class="button">
+                Explore My Project →
+            </a>
+
+        </div>
+
+    </section>
+
+    <!-- Features -->
+    <section class="features" id="features">
+
+        <div class="card">
+            <div class="card-icon">⚡</div>
+
+            <h3>Automatic Deployment</h3>
+
+            <p>
+                New code pushed to the main branch automatically
+                starts the deployment workflow.
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">🔄</div>
+
+            <h3>CI/CD Pipeline</h3>
+
+            <p>
+                GitHub Actions handles the deployment process
+                without requiring manual deployment.
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">🌐</div>
+
+            <h3>Live Website</h3>
+
+            <p>
+                The latest version of the application is hosted
+                using GitHub Pages.
+            </p>
+        </div>
+
+    </section>
+
+    <!-- Deployment Process -->
+    <section class="deployment">
+
+        <h2>💫 My Deployment Pipeline</h2>
+
+        <div class="steps">
+
+            <div class="step">👨‍💻 Code</div>
+
+            <div class="arrow">→</div>
+
+            <div class="step">📦 Git Push</div>
+
+            <div class="arrow">→</div>
+
+            <div class="step">⚙️ GitHub Actions</div>
+
+            <div class="arrow">→</div>
+
+            <div class="step">🚀 Deploy</div>
+
+            <div class="arrow">→</div>
+
+            <div class="step">🌎 Live</div>
+
+        </div>
+
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        Made with 💜 | Automated Deployment Practical
+        <br>
+        <small>Powered by GitHub Actions + GitHub Pages</small>
+    </footer>
+
 </body>
 </html>
